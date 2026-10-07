@@ -1,0 +1,144 @@
+name: ship-notify
+description: One Slack message format for every ship — native builds, OTA updates, deploys and pipeline steps — across all projects.
+author: StanSarr
+
+inputs:
+  webhook:
+    description: Slack incoming webhook URL. Empty prints the message instead (never fails the job).
+    required: false
+  kind:
+    description: build | ota | deploy | custom
+    required: false
+    default: custom
+  status:
+    description: success | failed | started | pending | skipped
+    required: false
+    default: success
+  project:
+    description: Project key (deenpocket, kynel, rinqo, cutlyst) — picks the name and the app icon.
+    required: true
+  project-name:
+    description: Display name, when not the known one.
+    required: false
+  icon-url:
+    description: App icon URL, when not the one in this repository.
+    required: false
+  env:
+    description: staging | production | preview | …
+    required: false
+  title:
+    description: Title of a custom message (builds, OTA and deploys write their own).
+    required: false
+  subtitle:
+    description: A line under the title.
+    required: false
+  body:
+    description: Free mrkdwn under the title (custom messages).
+    required: false
+  items:
+    description: One bullet per line (custom messages).
+    required: false
+  platform:
+    description: ios | android, when no builds JSON is given.
+    required: false
+  version:
+    description: App or release version.
+    required: false
+  build-number:
+    description: Build number, when no builds JSON is given.
+    required: false
+  surface:
+    description: What a deploy shipped (API, Console, Web…).
+    required: false
+  url:
+    description: Where a deploy lives.
+    required: false
+  builds:
+    description: The JSON `eas build --json` prints, inline or as a file path. One message per platform.
+    required: false
+  updates:
+    description: The JSON `eas update --json` prints, inline or as a file path.
+    required: false
+  targets:
+    description: Builds an OTA update lands on (same shape as builds).
+    required: false
+  base-sha:
+    description: The previous ship's commit; the commits from it to head-sha become "What's included".
+    required: false
+  head-sha:
+    description: Defaults to github.sha.
+    required: false
+  commits:
+    description: Commits to list instead of fetching them — a JSON array of messages or {type, scope, description, pr}.
+    required: false
+  error:
+    description: Error text for a failure.
+    required: false
+  error-file:
+    description: A log file whose last lines are shown on a failure.
+    required: false
+  note:
+    description: A small italic note at the end.
+    required: false
+  image-url:
+    description: A picture to show (must be publicly reachable).
+    required: false
+  buttons:
+    description: 'JSON array of {"text": "…", "url": "…", "primary": true} (custom messages).'
+    required: false
+  events-file:
+    description: JSON-lines file, one custom message per line (overrides title, items, …) — for a run that has several things to say.
+    required: false
+  author:
+    description: GitHub login shown with its avatar. Defaults to github.actor.
+    required: false
+  run-url:
+    description: Defaults to this workflow run.
+    required: false
+  github-token:
+    description: Used to read the commits between base-sha and head-sha.
+    required: false
+    default: ${{ github.token }}
+  fail-on-error:
+    description: Fail the step when Slack refuses the message.
+    required: false
+    default: "false"
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      run: node "$GITHUB_ACTION_PATH/src/notify.mjs"
+      env:
+        SN_WEBHOOK: ${{ inputs.webhook }}
+        SN_KIND: ${{ inputs.kind }}
+        SN_STATUS: ${{ inputs.status }}
+        SN_PROJECT: ${{ inputs.project }}
+        SN_PROJECT_NAME: ${{ inputs.project-name }}
+        SN_ICON_URL: ${{ inputs.icon-url }}
+        SN_ENV: ${{ inputs.env }}
+        SN_TITLE: ${{ inputs.title }}
+        SN_SUBTITLE: ${{ inputs.subtitle }}
+        SN_BODY: ${{ inputs.body }}
+        SN_ITEMS: ${{ inputs.items }}
+        SN_PLATFORM: ${{ inputs.platform }}
+        SN_VERSION: ${{ inputs.version }}
+        SN_BUILD_NUMBER: ${{ inputs.build-number }}
+        SN_SURFACE: ${{ inputs.surface }}
+        SN_URL: ${{ inputs.url }}
+        SN_BUILDS: ${{ inputs.builds }}
+        SN_UPDATES: ${{ inputs.updates }}
+        SN_TARGETS: ${{ inputs.targets }}
+        SN_BASE_SHA: ${{ inputs.base-sha }}
+        SN_HEAD_SHA: ${{ inputs.head-sha }}
+        SN_COMMITS: ${{ inputs.commits }}
+        SN_ERROR: ${{ inputs.error }}
+        SN_ERROR_FILE: ${{ inputs.error-file }}
+        SN_NOTE: ${{ inputs.note }}
+        SN_IMAGE_URL: ${{ inputs.image-url }}
+        SN_BUTTONS: ${{ inputs.buttons }}
+        SN_EVENTS_FILE: ${{ inputs.events-file }}
+        SN_AUTHOR: ${{ inputs.author }}
+        SN_RUN_URL: ${{ inputs.run-url }}
+        SN_GITHUB_TOKEN: ${{ inputs.github-token }}
+        SN_FAIL_ON_ERROR: ${{ inputs.fail-on-error }}

@@ -1,0 +1,11 @@
+{
+  "name": "ship-notify",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "One Slack message format for every ship, across projects.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs"
+  },
+  "engines": { "node": ">=20" }
+}
