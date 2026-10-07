@@ -110,3 +110,10 @@ test("a message Slack refuses for a picture is sent again without pictures", asy
   assert.equal(sent.length, 2);
   assert.doesNotMatch(JSON.stringify(sent[1]), /image_url/);
 });
+
+test("Kynel and Cutlyst updates link to their EAS pages even when the JSON does not name the project", () => {
+  for (const key of ["kynel", "cutlyst"]) {
+    const [message] = formatMessages({ ...base, project: projectOf(key), kind: "ota", status: "success", updates: [{ platform: "ios", group: "g-9" }], targets: [{ appBuildVersion: "3" }] });
+    assert.match(textOf(message), new RegExp(`accounts/bmtech/projects/${key}/updates/g-9`));
+  }
+});

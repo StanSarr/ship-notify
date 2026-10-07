@@ -9,9 +9,9 @@ const ICON_BASE = "https://raw.githubusercontent.com/StanSarr/ship-notify/main/i
 
 export const PROJECTS = {
   deenpocket: { name: "DeenPocket", expo: { account: "bmtech", slug: "deenpocket" } },
-  kynel: { name: "Kynel" },
+  kynel: { name: "Kynel", expo: { account: "bmtech", slug: "kynel" } },
   rinqo: { name: "Rinqo" },
-  cutlyst: { name: "Cutlyst" },
+  cutlyst: { name: "Cutlyst", expo: { account: "bmtech", slug: "cutlyst" } },
 };
 
 /** A project's name and icon; an unknown key still gets a readable name and no icon. */

@@ -89,6 +89,9 @@ inputs:
   events-file:
     description: JSON-lines file, one custom message per line (overrides title, items, …) — for a run that has several things to say.
     required: false
+  branch:
+    description: Branch shown in the footer. Defaults to github.ref_name (on a workflow_run that is the default branch, so pass the shipped one).
+    required: false
   author:
     description: GitHub login shown with its avatar. Defaults to github.actor.
     required: false
@@ -138,6 +141,7 @@ runs:
         SN_IMAGE_URL: ${{ inputs.image-url }}
         SN_BUTTONS: ${{ inputs.buttons }}
         SN_EVENTS_FILE: ${{ inputs.events-file }}
+        SN_BRANCH: ${{ inputs.branch }}
         SN_AUTHOR: ${{ inputs.author }}
         SN_RUN_URL: ${{ inputs.run-url }}
         SN_GITHUB_TOKEN: ${{ inputs.github-token }}

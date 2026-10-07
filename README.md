@@ -31,6 +31,8 @@ linked to their PRs), the error on a failure, an optional picture, and buttons.
 | `deploy` | `surface`, `url`                         | "API deployed · staging"                                    |
 | `custom` | `title`, `items`, `buttons`, `image-url` | anything else: a store promotion, a pipeline step           |
 
+On a `workflow_run` (or a cron) `github.ref_name` is the default branch: pass `branch` (and `head-sha`) for the branch actually shipped.
+
 `events-file` takes a JSON-lines file, one custom message per line, for a run
 that has several things to say (each line can set `title`, `subtitle`, `items`,
 `status`, `imageUrl`, `buttons`, …).
